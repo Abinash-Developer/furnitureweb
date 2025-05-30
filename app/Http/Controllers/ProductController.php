@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Products;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
@@ -118,5 +119,16 @@ class ProductController extends Controller
     public function destroy(Products $products)
     {
         //
+    }
+    public function craftedProducts(Request $request){
+        try {
+            $craftedProducts = Products::take('3')->get();
+            return response()->json(['success'=>true,'message'=>"products fetched successfully",'results'=>$craftedProducts]);
+        } catch (Exception  $exception) {
+            return response()->json(['success'=>false,'message'=>$exception->getMessage()]);
+        }
+    }
+    public function addToCart(Request $request){
+      dd("fdfdfdf");
     }
 }

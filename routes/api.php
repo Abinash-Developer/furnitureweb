@@ -18,12 +18,16 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
+Route::post('/login', [AuthController::class, 'login'])->name('login');
+Route::get('/craftedProducts', [ProductController::class, 'craftedProducts']);
 
-// Route::middleware('auth:sanctum')->group(function () {
-//     Route::post('/logout', [AuthController::class, 'logout']);
-    
-//     //Routes for Products
-//     Route::post('/admin/addProduct', [ProductController::class,'create'])->middleware('roleChecker:admin');
-// });
+
+Route::middleware('auth:sanctum')->group(function () {
+    // USER SIDE
+    Route::get('/add-to-cart', [ProductController::class,'addToCart']);
+    // ADMIN ROUTES
+    Route::middleware('roleChecker:admin')->prefix('admin')->group(function () {
+        Route::post('/addProduct', [ProductController::class, 'create']);
+    });
+});
 
