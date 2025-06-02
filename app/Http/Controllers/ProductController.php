@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Products;
+use App\Models\AddToCart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+
 
 class ProductController extends Controller
 {
@@ -128,7 +130,24 @@ class ProductController extends Controller
             return response()->json(['success'=>false,'message'=>$exception->getMessage()]);
         }
     }
-    public function addToCart(Request $request){
-      dd("fdfdfdf");
+    public function addToCart($id){
+      try {
+        $cartData = [
+            'user_id' => Auth::id(),
+            'product_id' => $id,
+        ];
+        AddToCart::create($cartData);
+        return response()->json(['success'=>true,'message'=>"Product add to the caret successfully"]);
+      } catch (\Throwable $th) {
+        return response()->json(['success'=>false,'message'=>$th->getMessage()]);
+      }
+    }
+    public function cartCount(){
+        try {
+            $cartCount = AddToCart::where('user_id',Auth::id())->count();
+            return response()->json(['success'=>true,'message'=>"Product add to the caret successfully",'result'=>$cartCount]);
+        } catch (\Throwable $th) {
+              return response()->json(['success'=>false,'message'=>$th->getMessage()]);
+        }
     }
 }

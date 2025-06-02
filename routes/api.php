@@ -24,7 +24,8 @@ Route::get('/craftedProducts', [ProductController::class, 'craftedProducts']);
 
 Route::middleware('auth:sanctum')->group(function () {
     // USER SIDE
-    Route::get('/add-to-cart', [ProductController::class,'addToCart']);
+    Route::get('/add-to-cart/{id}', [ProductController::class,'addToCart']);
+    Route::get('/cart-count', [ProductController::class,'cartCount']);
     // ADMIN ROUTES
     Route::middleware('roleChecker:admin')->prefix('admin')->group(function () {
         Route::post('/addProduct', [ProductController::class, 'create']);
